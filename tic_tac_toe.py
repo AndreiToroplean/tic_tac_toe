@@ -16,8 +16,7 @@ def check_play_again():
 
 
 def main():
-    is_playing = True
-    while is_playing:
+    while True:
         game = Game()
         game.main_loop()
         if not check_play_again():
