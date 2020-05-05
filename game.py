@@ -38,7 +38,7 @@ class Game:
         while True:
             try:
                 self.player_input = int(input())
-                if self.player_input == 0 or self.player_input in self.already_played:
+                if self.player_input == 0 or self.player_input > 9 or self.player_input in self.already_played:
                     raise ValueError
             except ValueError:
                 print("Wrong input.")
@@ -51,6 +51,7 @@ class Game:
 
     def check_game_ended(self):
         if len(self.already_played) == 9:
+            self.winner = "No one"
             return True
         winner = self.grid.win()
         if winner is not None:
