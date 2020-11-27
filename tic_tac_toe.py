@@ -4,7 +4,7 @@ from game import Game
 def check_play_again():
     while True:
         try:
-            do_new_game = input("Play again? (y/n)\n")
+            do_new_game = input("Play again? (y/[n])\n")
             if (r := do_new_game.strip().lower()) != "y" and r != "n" and r != "":
                 raise ValueError
         except ValueError:
