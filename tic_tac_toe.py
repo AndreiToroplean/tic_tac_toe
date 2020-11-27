@@ -4,14 +4,16 @@ from game import Game
 def check_play_again():
     while True:
         try:
-            do_new_game = input("Play again? (y/[n])\n")
-            if (r := do_new_game.strip().lower()) != "y" and r != "n" and r != "":
+            do_new_game = input("Play again? (y/[n])\n").strip().lower()
+            if do_new_game != "y" and do_new_game != "n" and do_new_game != "":
                 raise ValueError
+
         except ValueError:
             print("Please enter 'y', 'n' or nothing.")
         else:
-            if r == "y":
+            if do_new_game == "y":
                 return True
+
             return False
 
 

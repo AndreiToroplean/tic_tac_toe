@@ -47,16 +47,18 @@ class Game:
                 break
 
     def apply_input(self):
-        self.grid.enter_input(self.player_input, self.player_symbols[self.turn])
+        self.grid.enter_input(self.player_input, self.turn)
 
     def check_game_ended(self):
         if len(self.already_played) == 9:
             self.winner = "No one"
             return True
-        winner = self.grid.win()
+
+        winner = self.grid.check_for_winner(self.turn)
         if winner is not None:
-            self.winner = winner
+            self.winner = self.player_symbols[winner]
             return True
+
         return False
 
     def print_end_msg(self):

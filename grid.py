@@ -1,24 +1,14 @@
 from math import floor
+import numpy as np
+from tabulate import tabulate
 
 
 class Grid:
     def __init__(self):
-        self.grid = [[None for _ in range(3)] for _ in range(3)]
+        self.grid = np.full((3, 3), -1, dtype=np.int8)
 
     def __str__(self):
-        rtn = ""
-        for row in self.grid:
-            rtn += "+---+---+---+\n"
-            for symbol in row:
-                rtn += "| "
-                if symbol is None:
-                    rtn += " "
-                else:
-                    rtn += symbol
-                rtn += " "
-            rtn += "|\n"
-        rtn += "+---+---+---+\n"
-        return rtn
+        return tabulate(self._str_arr(self.grid), tablefmt="fancy_grid")
 
     def draw(self):
         print(self)
@@ -27,15 +17,21 @@ class Grid:
         coords = (player_input-1) % 3, floor((9-player_input) / 3)
         self.grid[coords[1]][coords[0]] = symbol
 
-    def win(self):
+    def check_for_winner(self, turn):
         for row in self.grid:
-            if (winner := row[0]) == row[1] == row[2] and winner is not None:
-                return winner
-        for col in zip(*self.grid):
-            if (winner := col[0]) == col[1] == col[2] and winner is not None:
-                return winner
-        if (winner := self.grid[0][0]) == self.grid[1][1] == self.grid[2][2] and winner is not None:
-            return winner
-        if (winner := self.grid[0][2]) == self.grid[1][1] == self.grid[2][0] and winner is not None:
-            return winner
+            if np.all(row == turn):
+                return turn
+
+        for col in self.grid.T:
+            if np.all(col == turn):
+                return turn
+
+        if self.grid[0, 0] == self.grid[1, 1] == self.grid[2, 2] == turn:
+            return turn
+
+        if self.grid[0, 2] == self.grid[1, 1] == self.grid[2, 0] == turn:
+            return turn
+
         return None
+
+    _str_arr = np.vectorize(lambda cell: "O" if cell == 0 else "X" if cell == 1 else ".")
